@@ -22,7 +22,7 @@ export class UberController {
   }
 
   async getMoviesForTitle(req: Request, res: Response) {
-    const title = req?.query?.title as string;
+    const title = req.query.title as string | undefined;
 
     const movies = await this.uberMoviesService.getMoviesForTitle(title);
     res.json({
