@@ -1,0 +1,32 @@
+version: "2"
+
+networks:
+  app-tier:
+    driver: bridge
+
+volumes:
+  redisinsight:
+  redis-vol:
+
+services:
+  redis:
+    image: "bitnami/redis:latest"
+    container_name: redis-general
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-data:/data
+    networks:
+      - app-tier
+
+  redisinsight:
+    image: redis/redisinsight:latest
+    container_name: redisinsight
+    ports:
+      - 5540:5540
+    volumes:
+      - redisinsight:/data
+    networks:
+      - app-tier
