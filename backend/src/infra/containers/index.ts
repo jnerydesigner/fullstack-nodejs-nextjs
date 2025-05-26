@@ -1,9 +1,21 @@
 import { AxiosService } from "@application/services/axios.service";
 import { FetchService } from "@application/services/fetch.service";
+import { NinjaService } from "@application/services/ninja.service";
+import { PaymentService } from "@application/services/payment.service";
 import { UberMoviesService } from "@application/services/uber-movies.service";
 import { IHttpService } from "@domain/http-service.interface";
+import { INinjaService } from "@domain/ininja-service.interface";
+import { IPayment } from "@domain/payment.interface";
+import { ILogger } from "@infra/logger/logger.interface";
+import { PinoLogger } from "@infra/logger/pino-logger";
+import { LoggerTypes } from "@infra/types/logger.type";
+
+import { NinjaType } from "@infra/types/ninja.type";
+import { PatternType } from "@infra/types/pattern.type";
 import { UberType } from "@infra/types/uber.type";
 import { ViaCepType } from "@infra/types/viacep.type";
+import { NinjaController } from "@presenters/controllers/ninja.controller";
+import { PatternsController } from "@presenters/controllers/pattern.controller";
 import { UberController } from "@presenters/controllers/uber.controller";
 import { ViaCepController } from "@presenters/controllers/viacep.controller";
 import { Container } from "inversify";
@@ -24,5 +36,21 @@ containerGeneral.bind<IHttpService>(UberType.FetchService).to(FetchService);
 containerGeneral
   .bind<ViaCepController>(ViaCepType.ViaCepController)
   .to(ViaCepController);
+
+containerGeneral
+  .bind<NinjaController>(NinjaType.NinjaController)
+  .to(NinjaController);
+containerGeneral.bind<INinjaService>(NinjaType.NinjaService).to(NinjaService);
+
+containerGeneral
+  .bind<ILogger>(LoggerTypes.Logger)
+  .to(PinoLogger)
+  .inSingletonScope();
+
+containerGeneral
+  .bind<PatternsController>(PatternType.PatternsController)
+  .to(PatternsController);
+
+containerGeneral.bind<IPayment>(PatternType.PaymentService).to(PaymentService);
 
 export { containerGeneral };
