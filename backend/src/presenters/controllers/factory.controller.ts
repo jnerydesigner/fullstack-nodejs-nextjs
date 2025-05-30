@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 
 @injectable()
-export class PatternsController {
+export class FactoryController {
   constructor(
     @inject(PatternType.PaymentService)
     private readonly paymentService: IPayment
